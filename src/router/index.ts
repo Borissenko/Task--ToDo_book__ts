@@ -1,22 +1,44 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
+import store from '../store'
+
+import Auth from '../views/Auth.vue'
+import ToDo from '../views/ToDo.vue'
+import Add from '../views/Add.vue'
 
 Vue.use(VueRouter)
 
-  const routes: Array<RouteConfig> = [
+const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Auth',
+    component: Auth
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/todo',
+    name: 'ToDo',
+    component: ToDo,
+    beforeEnter(to: any, from: any, next: any) {
+      if (store.state.token === 'true' || localStorage.getItem('auth = ')) {
+        next()
+      } else {
+        next('/')
+      }
+    }
+  },
+  {
+    path: '/add',
+    name: 'Add',
+    component: Add,
+    beforeEnter(to: any, from: any, next: any) {
+      if (store.state.token === 'false' && localStorage.getItem('auth = ')) {
+        next('/todo')
+      } else if (store.state.token === 'true' || localStorage.getItem('auth = ')) {
+        next()
+      } else {
+        next('/')
+      }
+    }
   }
 ]
 

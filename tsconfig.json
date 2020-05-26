@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "module": "ES6",
+    "noImplicitAny": true,      //Иначе будет выдавать ошибку, если аргумент, const, let или var не имеют типа.
+    "noImplicitThis": true,
+    "noImplicitReturns": true,  //не подразумевать... Returns
     "target": "esnext",
-    "module": "esnext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
