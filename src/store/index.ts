@@ -62,9 +62,9 @@ export default new Vuex.Store({
   },
   actions: {
     // @ts-ignore
-    AUTH_FORM({commit, dispatch}, pl) {  //факовая аут-я и факовое получение токена с сервера
+    async AUTH_FORM({commit, dispatch}, pl) {  //факовая аут-я и факовое получение токена с сервера
       if(pl !== undefined) {
-        return Promise.resolve('true')
+        return await Promise.resolve('true')
           .then(response => {
             commit('PUT_TOKEN', response)
             return response
