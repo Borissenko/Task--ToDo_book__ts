@@ -1,4 +1,3 @@
-
 export interface Task {
   "groupName": string,
   "id": number,
@@ -13,6 +12,11 @@ export interface Filters {
 }
 export interface St {
   token: string,
-  groups: [string],
-  tasks: [Task]
+  groups: string[],
+  tasks: Task[]
+}
+
+export interface Auth {
+  login: string,
+  password: string
 }

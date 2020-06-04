@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex, {ActionContext} from 'vuex'
 import axios from 'axios'
-import {St, Task, Filters} from '@/types'
+import {St, Task, Filters, Auth} from '@/types'
 
 Vue.use(Vuex)
 
@@ -12,57 +12,47 @@ export default new Vuex.Store({
     tasks: []
   },
   mutations: {
-    PUT_TOKEN(st, token) {
+    PUT_TOKEN(st: St, token: string) {
       st.token = token
     },
-    DELETE_TOKEN (st) {
+    DELETE_TOKEN (st: St) {
       st.token = 'false'
     },
-    SET_GROUPS_TO_STORE(st, data) {
+    SET_GROUPS_TO_STORE(st: St, data) {
       st.groups = data
     },
-    SET_TASKS_TO_STORE(st, data) {
+    SET_TASKS_TO_STORE(st: St, data) {
       st.tasks = data
     },
-    CHANGE_STATUS(st, {id, newValue}) {
-      // @ts-ignore
+    CHANGE_STATUS(st: St, {id, newValue}) {
       let itemIndex = st.tasks.findIndex(it => it.id === id)
-      // @ts-ignore
       st.tasks[itemIndex].status = newValue
     },
-    DELETE_ITEM_IN_STORE(st, itemIndex) {
+    DELETE_ITEM_IN_STORE(st: St, itemIndex) {
       st.tasks.splice(itemIndex, 1)
     },
-    DELETE_GROUP_IN_STORE(st, groupName) {
-      // @ts-ignore
+    DELETE_GROUP_IN_STORE(st: St, groupName) {
       st.tasks = st.tasks.filter(it => it.groupName !== groupName)
       st.groups = st.groups.filter(it => it !== groupName)
     },
-    ADD_GROUP_TO_STORE(st, group) {
-      // @ts-ignore
+    ADD_GROUP_TO_STORE(st: St, group) {
       st.groups.unshift(group)
       st.groups = [...new Set(st.groups)]
     },
-    ADD_ITEM_TO_STORE(st, item) {
-      // @ts-ignore
+    ADD_ITEM_TO_STORE(st:St, item: Task):void {
       st.tasks.unshift(item)
-      // @ts-ignore
       st.groups.unshift(item.groupName)
       st.groups = [...new Set(st.groups)]
     },
-    // @ts-ignore
-    CHANGE_ITEM_TO_STORE(st: St, item: Task): any {
+    CHANGE_ITEM_TO_STORE(st: St, item) {
       let aa = st.tasks.filter((it: Task) => it.id !== item.id)
-      // @ts-ignore
       st.tasks = [...aa, item]
       st.groups.unshift(item.groupName)
-      // @ts-ignore
       st.groups = [...new Set(st.groups)]
     }
   },
   actions: {
-    // @ts-ignore
-    async AUTH_FORM({commit, dispatch}, pl) {  //факовая аут-я и факовое получение токена с сервера
+    async AUTH_FORM({commit, dispatch}, pl: Auth) {  //факовая аут-я и факовое получение токена с сервера
       if(pl !== undefined) {
         return await Promise.resolve('true')
           .then(response => {
