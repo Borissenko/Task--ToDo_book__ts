@@ -5,6 +5,7 @@ import store from './store'
 
 // @ts-ignore
 import Vuelidate from 'vuelidate'
+// @ts-ignore
 Vue.use(Vuelidate)
 
 Vue.config.productionTip = false

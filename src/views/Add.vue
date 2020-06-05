@@ -48,7 +48,7 @@
       ...mapGetters({
         ACCEPT_ITEM: 'ACCEPT_ITEM'
       }),
-      fields() {
+      fields(): string[] {
         if (this.$route.query.point === 'add group')
           return ['groupName']
         return ['groupName', 'title', 'description']
@@ -58,16 +58,16 @@
       ...mapActions({
         MAKE_TASK: 'MAKE_TASK'
       }),
-      makeItem() {
+      makeItem(): void {
         this.MAKE_TASK(this.forms)
           .then(() => this.$router.push('/todo'))
       },
-      onAbort() {
+      onAbort(): void {
         this.$router.push('/todo')
       }
     },
     created() {
-      if (typeof this.$route.query.point === 'number')
+      if (typeof this.$route.query.point === 'number')                   //this.$route.query.point - number
         this.forms = {...this.ACCEPT_ITEM(this.$route.query.point)}
     }
   })
