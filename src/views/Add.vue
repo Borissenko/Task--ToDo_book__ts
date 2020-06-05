@@ -25,10 +25,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import Vue, { VueConstructor } from 'vue'
   import {mapGetters, mapActions} from 'vuex'
+  import {Forms, Task} from '@/types'
 
-  export default {
+  interface VuexBindings {
+    ACCEPT_ITEM: () => Task;
+  }
+
+  export default (Vue as VueConstructor<Vue & VuexBindings>).extend({
     data: () => ({
       forms: {
         groupName: '',
@@ -36,7 +42,7 @@
         title: '',
         status: false,
         description: ''
-      }
+      } as Forms
     }),
     computed: {
       ...mapGetters({
@@ -64,7 +70,7 @@
       if (typeof this.$route.query.point === "number")
         this.forms = {...this.ACCEPT_ITEM(this.$route.query.point)}
     }
-  }
+  })
 </script>
 
 <style lang="scss" scoped>

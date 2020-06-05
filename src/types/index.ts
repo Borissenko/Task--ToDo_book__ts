@@ -13,8 +13,8 @@ export interface RootState {
 }
 
 export interface Filters {
-  name:  string,
-  status:  string
+  name: string,
+  status: string
 }
 
 export interface Auth {
@@ -22,3 +22,10 @@ export interface Auth {
   password: string
 }
 
+export interface Forms {
+  groupName: string,
+  id: number | null,
+  title: string,
+  status: boolean,
+  description: string
+}
