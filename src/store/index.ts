@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex, {MutationTree, ActionTree} from 'vuex'
+import Vuex, {MutationTree, ActionTree, GetterTree} from 'vuex'
 import axios from 'axios'
 import {RootState, Task, Filters, Auth} from '@/types'
 
@@ -105,23 +105,23 @@ export default new Vuex.Store<RootState>({
     }
   } as ActionTree<RootState, {}>,
   getters: {
-    ACCEPT_FILTRED_DATA: state => filters => {
+    ACCEPT_FILTRED_DATA: (state: RootState) => (filters: Filters) => {
       if (filters.status === 'all') {
         if (filters.name === '') {  // любой статус, без фильтра по имени
           return state.tasks
         } else {                   // любой статус, фильтр по имени
-          return state.tasks.filter(it => it.title.toLowerCase().includes(filters.name.toLowerCase()))
+          return state.tasks.filter((it: Task) => it.title.toLowerCase().includes(filters.name.toLowerCase()))
         }
       } else {                    // отфильтруем по статусу и по имени
         if (filters.name === '') {
-          return state.tasks.filter(it => Boolean(it.status) === Boolean(filters.status))
+          return state.tasks.filter((it: Task) => it.status === filters.status)
         } else {
-          return state.tasks.filter(it => it.title.toLowerCase().includes(filters.name.toLowerCase()) && Boolean(it.status) === Boolean(filters.status))
+          return state.tasks.filter((it: Task) => it.title.toLowerCase().includes(filters.name.toLowerCase()) && it.status === filters.status)
         }
       }
     },
-    ACCEPT_GROUP_NAMES: state => state.groups,
-    ACCEPT_ITEM: state => id => state.tasks.find(it => it.id === Number(id)),
-    GET_TOKEN_FROM_STORE: state => state.token
-  }
+    ACCEPT_GROUP_NAMES: (state: RootState) => state.groups,
+    ACCEPT_ITEM: (state: RootState) => (id: number) => state.tasks.find((it: Task) => it.id === id),
+    GET_TOKEN_FROM_STORE: (state: RootState) => state.token
+  } as GetterTree<RootState, {}>
 })

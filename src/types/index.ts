@@ -6,14 +6,15 @@ export interface Task {
   "description": string
 }
 
-export interface Filters {
-  name:  string,
-  status:  string
-}
 export interface RootState {
   token: string,
   groups: string[],
   tasks: Task[]
+}
+
+export interface Filters {
+  name:  string,
+  status:  string
 }
 
 export interface Auth {
