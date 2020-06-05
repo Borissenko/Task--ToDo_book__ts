@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex, {MutationTree} from 'vuex'
+import Vuex, {MutationTree, ActionTree} from 'vuex'
 import axios from 'axios'
 import {RootState, Task, Filters, Auth} from '@/types'
 
@@ -52,14 +52,14 @@ export default new Vuex.Store<RootState>({
     }
   } as MutationTree<RootState>,
   actions: {
-    AUTH_FORM({commit, dispatch}, pl) {  //факовая аут-я и факовое получение токена с сервера
+    async AUTH_FORM({commit, dispatch}, pl: Auth) {  //факовая аут-я и факовое получение токена с сервера
       if(pl !== undefined) {
-        return Promise.resolve('true')
-          .then(response => {
+        return await Promise.resolve('true')
+          .then((response: string) => {
             commit('PUT_TOKEN', response)
             return response
           })
-          .then(response => localStorage.setItem('auth = ', response.toString()))
+          .then((response: string) => localStorage.setItem('auth = ', response))
           .then(() => dispatch('GET_DATA'))
       }
     },
@@ -69,23 +69,23 @@ export default new Vuex.Store<RootState>({
     },
     async GET_DATA({commit}) {    //инициализирующий запрос и получение данных с сервера
       let {data} = await axios.get('/data.json')
-      commit('SET_GROUPS_TO_STORE', data.groupNames)
-      commit('SET_TASKS_TO_STORE', data.tasks)
+      commit('SET_GROUPS_TO_STORE', data.groupNames as string[])
+      commit('SET_TASKS_TO_STORE', data.tasks as Task[])
     },
-    CHANGE_STATUS({commit}, {id, newValue}) {
+    CHANGE_STATUS({commit}, {id, newValue}: {id: number; newValue: string;}) {
       commit('CHANGE_STATUS', {id, newValue})
       //при наличии бакенда здесь необходимо делать запрос на CHANGE status в bd сервера
     },
-    DELETE_ITEM({commit, dispatch, state}, id) {
-      let itemIndex = state.tasks.findIndex(it => it.id === id)
-      commit('DELETE_ITEM_IN_STORE', itemIndex)
+    DELETE_ITEM({commit, dispatch, state}, id: number) {
+      let itemIndex = state.tasks.findIndex((it: Task) => it.id === id)
+      commit('DELETE_ITEM_IN_STORE', itemIndex as number)
       //при наличии бакенда здесь необходимо делать запрос на удаление item в bd сервера
     },
-    DELETE_GROUP({commit}, groupName) {
+    DELETE_GROUP({commit}, groupName: string) {
       commit('DELETE_GROUP_IN_STORE', groupName)
       //при наличии бакенда здесь необходимо делать запрос на удаление группы в bd сервера
     },
-    MAKE_TASK({commit}, item) {
+    MAKE_TASK({commit}, item: Task) {
       if (item.title.length === 0) {
         commit('ADD_GROUP_TO_STORE', item.groupName)
         //при наличии бакенда здесь необходимо делать запрос на изменение в bd сервера
@@ -103,7 +103,7 @@ export default new Vuex.Store<RootState>({
         return Promise.resolve()
       }
     }
-  },
+  } as ActionTree<RootState, {}>,
   getters: {
     ACCEPT_FILTRED_DATA: state => filters => {
       if (filters.status === 'all') {
