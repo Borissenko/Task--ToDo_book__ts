@@ -26,10 +26,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import {mapGetters, mapActions, mapMutations} from 'vuex'
-  import Bar from '@/components/bar'
-  import Cart from '@/components/cart'
+  import Bar from '@/components/bar.vue'
+  import Cart from '@/components/cart.vue'
 
   export default {
     components: {
