@@ -3,9 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// @ts-ignore
 import Vuelidate from 'vuelidate'
-// @ts-ignore
 Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
