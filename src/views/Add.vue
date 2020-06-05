@@ -67,7 +67,7 @@
       }
     },
     created() {
-      if (typeof this.$route.query.point === "number")
+      if (typeof this.$route.query.point === 'number')
         this.forms = {...this.ACCEPT_ITEM(this.$route.query.point)}
     }
   })
