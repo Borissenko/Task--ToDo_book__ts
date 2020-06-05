@@ -1,60 +1,60 @@
 import Vue from 'vue'
-import Vuex, {MutationTree} from 'vuex'
+import Vuex, {ActionContext, StoreOptions} from 'vuex'
 import axios from 'axios'
-import {RootState, Task, Filters, Auth} from '@/types'
+import {St, Task, Filters, Auth} from '@/types'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store<RootState>({
+export default new Vuex.Store({
   state: {
     token: 'false',
     groups: [],
     tasks: []
-  } as RootState,
+  } as St,
   mutations: {
-    PUT_TOKEN(st: RootState, token: string) {
+    PUT_TOKEN(st: St, token: string) {
       st.token = token
     },
-    DELETE_TOKEN (st: RootState) {
+    DELETE_TOKEN (st: St) {
       st.token = 'false'
     },
-    SET_GROUPS_TO_STORE(st: RootState, data: string[]) {
+    SET_GROUPS_TO_STORE(st: St, data: string[]) {
       st.groups = data
     },
-    SET_TASKS_TO_STORE(st: RootState, data: Task[]) {
+    SET_TASKS_TO_STORE(st: St, data) {
       st.tasks = data
     },
-    CHANGE_STATUS(st: RootState, {id, newValue}: {id: number; newValue: string;}) {
+    CHANGE_STATUS(st: St, {id, newValue}) {
       let itemIndex = st.tasks.findIndex((it: Task) => it.id === id)
       st.tasks[itemIndex].status = newValue
     },
-    DELETE_ITEM_IN_STORE(st: RootState, itemIndex: number) {
+    DELETE_ITEM_IN_STORE(st: St, itemIndex) {
       st.tasks.splice(itemIndex, 1)
     },
-    DELETE_GROUP_IN_STORE(st: RootState, groupName: string) {
-      st.tasks = st.tasks.filter((it: Task) => it.groupName !== groupName)
-      st.groups = st.groups.filter((it: string) => it !== groupName)
+    DELETE_GROUP_IN_STORE(st: St, groupName) {
+      st.tasks = st.tasks.filter(it => it.groupName !== groupName)
+      st.groups = st.groups.filter(it => it !== groupName)
     },
-    ADD_GROUP_TO_STORE(st: RootState, group: string) {
+    ADD_GROUP_TO_STORE(st: St, group) {
       st.groups.unshift(group)
       st.groups = [...new Set(st.groups)]
     },
-    ADD_ITEM_TO_STORE(st: RootState, item: Task) {
+    ADD_ITEM_TO_STORE(st:St, item: Task):void {
       st.tasks.unshift(item)
       st.groups.unshift(item.groupName)
       st.groups = [...new Set(st.groups)]
     },
-    CHANGE_ITEM_TO_STORE(st: RootState, item: Task) {
+    CHANGE_ITEM_TO_STORE(st: St, item) {
       let aa = st.tasks.filter((it: Task) => it.id !== item.id)
       st.tasks = [...aa, item]
       st.groups.unshift(item.groupName)
       st.groups = [...new Set(st.groups)]
     }
-  } as MutationTree<RootState>,
+  },
   actions: {
-    AUTH_FORM({commit, dispatch}, pl) {  //факовая аут-я и факовое получение токена с сервера
+    async AUTH_FORM({commit, dispatch}, pl: Auth) {  //факовая аут-я и факовое получение токена с сервера
       if(pl !== undefined) {
-        return Promise.resolve('true')
+        return await Promise.resolve('true')
           .then(response => {
             commit('PUT_TOKEN', response)
             return response
@@ -77,7 +77,7 @@ export default new Vuex.Store<RootState>({
       //при наличии бакенда здесь необходимо делать запрос на CHANGE status в bd сервера
     },
     DELETE_ITEM({commit, dispatch, state}, id) {
-      let itemIndex = state.tasks.findIndex(it => it.id === id)
+      let itemIndex = state.tasks.findIndex((it: Task) => it.id === id)
       commit('DELETE_ITEM_IN_STORE', itemIndex)
       //при наличии бакенда здесь необходимо делать запрос на удаление item в bd сервера
     },
@@ -105,23 +105,23 @@ export default new Vuex.Store<RootState>({
     }
   },
   getters: {
-    ACCEPT_FILTRED_DATA: state => filters => {
+    ACCEPT_FILTRED_DATA: state => (filters: Filters ) => {
       if (filters.status === 'all') {
         if (filters.name === '') {  // любой статус, без фильтра по имени
           return state.tasks
         } else {                   // любой статус, фильтр по имени
-          return state.tasks.filter(it => it.title.toLowerCase().includes(filters.name.toLowerCase()))
+          return state.tasks.filter((it: Task) => it.title.toLowerCase().includes(filters.name.toLowerCase()))
         }
       } else {                    // отфильтруем по статусу и по имени
         if (filters.name === '') {
-          return state.tasks.filter(it => Boolean(it.status) === Boolean(filters.status))
+          return state.tasks.filter((it: Task) => Boolean(it.status) === Boolean(filters.status))
         } else {
-          return state.tasks.filter(it => it.title.toLowerCase().includes(filters.name.toLowerCase()) && Boolean(it.status) === Boolean(filters.status))
+          return state.tasks.filter((it: Task) => it.title.toLowerCase().includes(filters.name.toLowerCase()) && Boolean(it.status) === Boolean(filters.status))
         }
       }
     },
     ACCEPT_GROUP_NAMES: state => state.groups,
-    ACCEPT_ITEM: state => id => state.tasks.find(it => it.id === Number(id)),
+    ACCEPT_ITEM: state => (id: number) => state.tasks.find((it: Task) => it.id === id),
     GET_TOKEN_FROM_STORE: state => state.token
   }
 })

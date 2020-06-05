@@ -10,7 +10,7 @@ export interface Filters {
   name:  string,
   status:  string
 }
-export interface St {
+export interface RootState {
   token: string,
   groups: string[],
   tasks: Task[]
@@ -20,3 +20,4 @@ export interface Auth {
   login: string,
   password: string
 }
+
