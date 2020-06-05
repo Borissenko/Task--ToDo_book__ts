@@ -35,8 +35,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import {mapActions} from 'vuex'
+  // @ts-ignore
   import {required} from 'vuelidate/lib/validators'
 
   export default {
