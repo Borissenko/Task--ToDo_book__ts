@@ -5,9 +5,6 @@ import store from './store'
 
 // @ts-ignore
 import Vuelidate from 'vuelidate'
-//если зависимость отторгается тайпскриптом,
-// то перед ее декларацией добавляем "// @ts-ignore".
-
 Vue.use(Vuelidate)
 
 Vue.config.productionTip = false

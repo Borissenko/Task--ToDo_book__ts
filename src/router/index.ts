@@ -18,7 +18,7 @@ const routes: Array<RouteConfig> = [
     path: '/todo',
     name: 'ToDo',
     component: ToDo,
-    beforeEnter(to: any, from: any, next: any) {
+    beforeEnter(to, from, next) {
       if (store.state.token === 'true' || localStorage.getItem('auth = ')) {
         next()
       } else {
@@ -30,7 +30,7 @@ const routes: Array<RouteConfig> = [
     path: '/add',
     name: 'Add',
     component: Add,
-    beforeEnter(to: any, from: any, next: any) {
+    beforeEnter(to, from, next) {
       if (store.state.token === 'false' && localStorage.getItem('auth = ')) {
         next('/todo')
       } else if (store.state.token === 'true' || localStorage.getItem('auth = ')) {

@@ -10,7 +10,7 @@ export default new Vuex.Store({
     token: 'false',
     groups: [],
     tasks: []
-  },
+  } as St,
   mutations: {
     PUT_TOKEN(st: St, token: string) {
       st.token = token
@@ -18,7 +18,7 @@ export default new Vuex.Store({
     DELETE_TOKEN (st: St) {
       st.token = 'false'
     },
-    SET_GROUPS_TO_STORE(st: St, data) {
+    SET_GROUPS_TO_STORE(st: St, data: string[]) {
       st.groups = data
     },
     SET_TASKS_TO_STORE(st: St, data) {
