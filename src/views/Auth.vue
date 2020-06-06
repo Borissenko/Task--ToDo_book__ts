@@ -37,19 +37,23 @@
 
 <script lang="ts">
   import {mapActions} from 'vuex'
+  import {Auth} from '@/types'
   import {required} from 'vuelidate/lib/validators'
-  //установил @types/vuelidate - ушло красное у vuelidate-пакета.
   import Vue from 'vue'
+
+
+  import { validationMixin } from 'vuelidate';
+
 
   export default Vue.extend({
     data: () => ({
       form: {
         login: '',
         password: ''
-      },
+      } as Auth,
       placeholder: 'It would be enough to enter any word',
-      loginNoDirty: false,
-      passwordNoDirty: false
+      loginNoDirty: false as boolean,
+      passwordNoDirty: false as boolean
     }),
     validations: {
       form: {
@@ -61,16 +65,18 @@
         }
       }
     },
+    mixins: [
+      validationMixin
+    ],
     methods: {
       ...mapActions ([
         'AUTH_FORM'
       ]),
       onSubmit() {
-// @ts-ignore
         if(!this.$v.form.login.$dirty)
           this.loginNoDirty = true
 
-// @ts-ignore
+        // @ts-ignore
         if(!this.$v.form.password.$dirty)
           this.passwordNoDirty = true
 
@@ -79,6 +85,9 @@
             .then (() => this.$router.push('/todo'))
         }
       }
+    },
+    created() {
+      console.log('this.$v ==', this.$v)
     }
   })
 </script>
