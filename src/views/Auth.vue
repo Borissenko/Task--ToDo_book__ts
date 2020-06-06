@@ -41,7 +41,7 @@
   //установил @types/vuelidate - ушло красное у vuelidate-пакета.
   import Vue, { VueConstructor } from 'vue'  //ушло красное у this.loginNoDirty.
 
-  export default (Vue as VueConstructor<Vue>).extend({
+  export default Vue.extend({
     data: () => ({
       form: {
         login: '',

@@ -30,9 +30,16 @@
   import {mapGetters, mapActions, mapMutations} from 'vuex'
   import Bar from '@/components/bar.vue'
   import Cart from '@/components/cart.vue'
+  import Vue, { VueConstructor } from 'vue'
+  import {Forms, Task, Filters} from '@/types'
+  import {Dictionary} from "vue-router/types/router"
 
-  export default {
-    components: {
+  interface VuexBindings {
+    ACCEPT_GROUP_NAMES: () => string;
+    ACCEPT_FILTRED_DATA: () => Task[]
+  }
+
+  export default (Vue as VueConstructor<Vue & VuexBindings>).extend({    components: {
       Bar,
       Cart
     },
@@ -40,7 +47,7 @@
       filters: {
         name: '',
         status: 'all'
-      }
+      } as Filters
     }),
     computed: {
       ...mapGetters([
@@ -56,11 +63,11 @@
       ...mapMutations([
         'PUT_TOKEN'
       ]),
-      changeFilter(filters) {
+      changeFilter(filters: Filters) {
         this.filters = filters
       },
-      onMakeItem(id) {
-        this.$router.push({name: 'Add', query: {point: id}})
+      onMakeItem(id: number) {
+        this.$router.push({name: 'Add', query: {point: id.toString()} as unknown as Dictionary<string>})
       }
     },
     created() {
@@ -70,7 +77,7 @@
       if (!this.GET_TOKEN_FROM_STORE && localStorage.getItem('auth = '))
         this.PUT_TOKEN(localStorage.getItem('auth = '))
     }
-  }
+  })
 </script>
 
 <style lang="scss" scoped>

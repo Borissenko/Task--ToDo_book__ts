@@ -121,7 +121,7 @@ export default new Vuex.Store<RootState>({
       }
     },
     ACCEPT_GROUP_NAMES: (state: RootState): string[] => state.groups,
-    ACCEPT_ITEM: (state: RootState) => (id: number) => state.tasks.find((it: Task) => it.id === id),
+    ACCEPT_ITEM: (state: RootState) => (id: number) => state.tasks.find((it: Task) => it.id === id) as Task,  //id- number??  ДА.
     GET_TOKEN_FROM_STORE: (state: RootState): string => state.token
   } as GetterTree<RootState, {}>
 })

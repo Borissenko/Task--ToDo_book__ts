@@ -31,7 +31,7 @@
   import {Forms, Task} from '@/types'
 
   interface VuexBindings {
-    ACCEPT_ITEM: () => Task;
+    ACCEPT_ITEM: () => Task;   //...mapGetters
   }
 
   export default (Vue as VueConstructor<Vue & VuexBindings>).extend({
