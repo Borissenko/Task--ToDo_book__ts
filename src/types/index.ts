@@ -29,3 +29,9 @@ export interface Forms {
   status: boolean,
   description: string
 }
+
+export interface MapGettersBindings {
+  ACCEPT_GROUP_NAMES: () => string;
+  ACCEPT_FILTRED_DATA: () => Task[];
+  GET_TOKEN_FROM_STORE: () => string
+}

@@ -39,7 +39,7 @@
   import {mapActions} from 'vuex'
   import {required} from 'vuelidate/lib/validators'
   //установил @types/vuelidate - ушло красное у vuelidate-пакета.
-  import Vue, { VueConstructor } from 'vue'  //ушло красное у this.loginNoDirty.
+  import Vue from 'vue'
 
   export default Vue.extend({
     data: () => ({
@@ -66,9 +66,11 @@
         'AUTH_FORM'
       ]),
       onSubmit() {
+// @ts-ignore
         if(!this.$v.form.login.$dirty)
           this.loginNoDirty = true
 
+// @ts-ignore
         if(!this.$v.form.password.$dirty)
           this.passwordNoDirty = true
 
@@ -78,7 +80,7 @@
         }
       }
     }
-  }
+  })
 </script>
 
 <style lang="scss" scoped>

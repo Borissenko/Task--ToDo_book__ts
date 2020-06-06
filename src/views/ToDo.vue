@@ -31,15 +31,11 @@
   import Bar from '@/components/bar.vue'
   import Cart from '@/components/cart.vue'
   import Vue, { VueConstructor } from 'vue'
-  import {Forms, Task, Filters} from '@/types'
+  import {Forms, Task, Filters, MapGettersBindings} from '@/types'
   import {Dictionary} from "vue-router/types/router"
 
-  interface VuexBindings {
-    ACCEPT_GROUP_NAMES: () => string;
-    ACCEPT_FILTRED_DATA: () => Task[]
-  }
 
-  export default (Vue as VueConstructor<Vue & VuexBindings>).extend({    components: {
+  export default (Vue as VueConstructor<Vue & MapGettersBindings>).extend({    components: {
       Bar,
       Cart
     },
@@ -52,7 +48,8 @@
     computed: {
       ...mapGetters([
         'ACCEPT_GROUP_NAMES',
-        'ACCEPT_FILTRED_DATA'
+        'ACCEPT_FILTRED_DATA',
+        'GET_TOKEN_FROM_STORE'
       ])
     },
     methods: {
